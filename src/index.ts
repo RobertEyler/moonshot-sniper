@@ -315,7 +315,11 @@ const start=async ()=> {
   solanaConnection.onProgramAccountChange(new PublicKey(tokenLaunchpadIdlV1.metadata.address), async (keyedAccountInfo, ctx) => {
     const curveInfo = CurveAccountLayout.decode(keyedAccountInfo.accountInfo.data, 8);
     const curveAccount = keyedAccountInfo.accountId.toBase58();
-    await processMonshot(curveAccount, curveInfo);
+    try{
+      await processMonshot(curveAccount, curveInfo);
+    }catch (err){
+      logger.error(`processMonshot error ${err}`);
+    }
   }
   );
 };
